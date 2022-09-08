@@ -1,10 +1,14 @@
 package com.example.newsapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.example.newsapp.Models.NewsApiResponse;
+import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
@@ -21,6 +25,7 @@ public class RequestManager {
         this.context = context;
     }
 
+    @SuppressLint("ShowToast")
     public void getArticle(OnFetchDataListener listener, String category, String query) {
         CallNewsApi callNewsApi = retrofit.create(CallNewsApi.class);
         Call<NewsApiResponse> call = callNewsApi.callHeadlines(
@@ -29,6 +34,29 @@ public class RequestManager {
                 query,
                 context.getString(R.string.api_key)
         );
+
+        try {
+            call.enqueue(new Callback<NewsApiResponse>() {
+                @Override
+                public void onResponse(Call<NewsApiResponse> call, Response<NewsApiResponse> response) {
+                    if (!response.isSuccessful()) {
+                        Snackbar.make(null, "Code: " + response.code(), Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Dismiss", v -> {
+                                });
+                        return;
+                    }
+
+                    listener.onFetchData(response.body().getArticles(), "Success");
+                }
+
+                @Override
+                public void onFailure(Call<NewsApiResponse> call, Throwable t) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public interface CallNewsApi {
