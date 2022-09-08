@@ -31,7 +31,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.text_title.setText(articles.get(position).getTitle());
         holder.text_source.setText(articles.get(position).getSource().getName());
-        Picasso.get().load(articles.get(position).getUrlToImage()).into(holder.img_headline);
+
+        if (articles.get(position).getUrlToImage() != null) {
+            Picasso.get().load(articles.get(position).getUrlToImage()).into(holder.img_headline);
+        }
     }
 
     @Override
