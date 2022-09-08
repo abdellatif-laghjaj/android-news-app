@@ -15,10 +15,12 @@ import java.util.List;
 public class ArticleAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     private Context context;
     private List<Article> articles;
+    private SelectListener selectListener;
 
-    public ArticleAdapter(Context context, List<Article> articles) {
+    public ArticleAdapter(Context context, List<Article> articles, SelectListener selectListener) {
         this.context = context;
         this.articles = articles;
+        this.selectListener = selectListener;
     }
 
     @NonNull
@@ -35,6 +37,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         if (articles.get(position).getUrlToImage() != null) {
             Picasso.get().load(articles.get(position).getUrlToImage()).into(holder.img_headline);
         }
+
+        holder.cardView.setOnClickListener(v ->{
+            selectListener.OnNewsClick(articles.get(position));
+        });
     }
 
     @Override

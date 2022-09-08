@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.newsapp.Models.Article;
@@ -12,7 +13,7 @@ import com.example.newsapp.Models.NewsApiResponse;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SelectListener {
     RecyclerView recyclerView;
     ArticleAdapter articleAdapter;
     ProgressDialog progressDialog;
@@ -45,9 +46,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void showNews(List<Article> list) {
         recyclerView = findViewById(R.id.recycler_main);
-        articleAdapter = new ArticleAdapter(this, list);
+        articleAdapter = new ArticleAdapter(this, list, this);
         articleAdapter.setHasStableIds(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setAdapter(articleAdapter);
+    }
+
+    @Override
+    public void OnNewsClick(Article article) {
+        startActivity(new Intent(this, DetailsActivity.class)
+                .putExtra("data", article));
     }
 }
