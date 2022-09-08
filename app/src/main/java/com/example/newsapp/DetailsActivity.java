@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.newsapp.Models.Article;
+
 public class DetailsActivity extends AppCompatActivity {
+    Article article;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
