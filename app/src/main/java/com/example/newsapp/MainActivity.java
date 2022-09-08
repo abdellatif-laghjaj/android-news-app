@@ -1,34 +1,53 @@
 package com.example.newsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.newsapp.Models.Article;
 import com.example.newsapp.Models.NewsApiResponse;
 
 import java.util.List;
+import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements SelectListener {
+public class MainActivity extends AppCompatActivity implements SelectListener, View.OnClickListener {
     RecyclerView recyclerView;
     ArticleAdapter articleAdapter;
     ProgressDialog progressDialog;
+    TextView text_view_1, text_view_2, text_view_3, text_view_4, text_view_5, text_view_6, text_view_7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Loading...");
-        progressDialog.show();
+        showProgressDialog("Loading articles...");
 
         RequestManager manager = new RequestManager(this);
-        manager.getArticle(listener, "general", null);
+        manager.getArticle(listener, "technology", null);
+
+        text_view_1 = findViewById(R.id.text_view_1);
+        text_view_2 = findViewById(R.id.text_view_2);
+        text_view_3 = findViewById(R.id.text_view_3);
+        text_view_4 = findViewById(R.id.text_view_4);
+        text_view_5 = findViewById(R.id.text_view_5);
+        text_view_6 = findViewById(R.id.text_view_6);
+        text_view_7 = findViewById(R.id.text_view_7);
+
+        text_view_1.setOnClickListener(this);
+        text_view_2.setOnClickListener(this);
+        text_view_3.setOnClickListener(this);
+        text_view_4.setOnClickListener(this);
+        text_view_5.setOnClickListener(this);
+        text_view_6.setOnClickListener(this);
+        text_view_7.setOnClickListener(this);
     }
 
     private final OnFetchDataListener<NewsApiResponse> listener = new OnFetchDataListener<NewsApiResponse>() {
@@ -56,5 +75,20 @@ public class MainActivity extends AppCompatActivity implements SelectListener {
     public void OnNewsClick(Article article) {
         startActivity(new Intent(this, DetailsActivity.class)
                 .putExtra("data", article));
+    }
+
+    @Override
+    public void onClick(View view) {
+        TextView textView = (TextView) view;
+        String category = textView.getText().toString().toLowerCase(Locale.ROOT);
+        showProgressDialog("Loading articles of " + category + " category...");
+        RequestManager manager = new RequestManager(this);
+        manager.getArticle(listener, category, null);
+    }
+
+    public void showProgressDialog(String title) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(title);
+        progressDialog.show();
     }
 }
