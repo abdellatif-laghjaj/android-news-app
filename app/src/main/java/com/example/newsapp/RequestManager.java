@@ -46,12 +46,12 @@ public class RequestManager {
                         return;
                     }
 
-                    listener.onFetchData(response.body().getArticles(), "Success");
+                    listener.onFetchData(response.body().getArticles(), response.message());
                 }
 
                 @Override
                 public void onFailure(Call<NewsApiResponse> call, Throwable t) {
-
+                    listener.onError("Request failed");
                 }
             });
         } catch (Exception e) {
