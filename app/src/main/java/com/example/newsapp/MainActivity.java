@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import com.example.newsapp.Models.Article;
@@ -14,11 +15,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArticleAdapter articleAdapter;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.show();
 
         RequestManager manager = new RequestManager(this);
         manager.getArticle(listener, "general", null);
@@ -28,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onFetchData(List<Article> list, String message) {
             showNews(list);
+            progressDialog.dismiss();
         }
 
         @Override
