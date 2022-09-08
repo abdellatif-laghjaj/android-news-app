@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showNews(List<Article> list) {
         recyclerView = findViewById(R.id.recycler_main);
+        articleAdapter = new ArticleAdapter(this, list);
         articleAdapter.setHasStableIds(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-        articleAdapter = new ArticleAdapter(this, list);
         recyclerView.setAdapter(articleAdapter);
     }
 }
