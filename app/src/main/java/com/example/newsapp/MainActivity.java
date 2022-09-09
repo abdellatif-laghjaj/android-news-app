@@ -72,8 +72,12 @@ public class MainActivity extends AppCompatActivity implements SelectListener, V
     private final OnFetchDataListener<NewsApiResponse> listener = new OnFetchDataListener<NewsApiResponse>() {
         @Override
         public void onFetchData(List<Article> list, String message) {
-            showNews(list);
-            progressDialog.dismiss();
+            if (list.isEmpty()) {
+                Snackbar.make(findViewById(R.id.main_layout), message, Snackbar.LENGTH_LONG).show();
+            } else {
+                showNews(list);
+                progressDialog.dismiss();
+            }
         }
 
         @Override
