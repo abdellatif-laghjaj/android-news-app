@@ -1,6 +1,7 @@
 package com.example.newsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements SelectListener, V
     RecyclerView recyclerView;
     ArticleAdapter articleAdapter;
     ProgressDialog progressDialog;
+    SearchView searchView;
     TextView text_view_1, text_view_2, text_view_3, text_view_4, text_view_5, text_view_6, text_view_7;
 
     @Override
@@ -40,6 +42,22 @@ public class MainActivity extends AppCompatActivity implements SelectListener, V
         text_view_5 = findViewById(R.id.text_view_5);
         text_view_6 = findViewById(R.id.text_view_6);
         text_view_7 = findViewById(R.id.text_view_7);
+
+        searchView = findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                showProgressDialog("Searching for " + query + "...");
+                RequestManager manager = new RequestManager(MainActivity.this);
+                manager.getArticle(listener, "general", query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         text_view_1.setOnClickListener(this);
         text_view_2.setOnClickListener(this);
