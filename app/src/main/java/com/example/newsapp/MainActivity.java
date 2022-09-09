@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.newsapp.Models.Article;
 import com.example.newsapp.Models.NewsApiResponse;
@@ -72,8 +73,15 @@ public class MainActivity extends AppCompatActivity implements SelectListener, V
     private final OnFetchDataListener<NewsApiResponse> listener = new OnFetchDataListener<NewsApiResponse>() {
         @Override
         public void onFetchData(List<Article> list, String message) {
-            showNews(list);
+            if (list.isEmpty()) {
+                Snackbar.make(findViewById(R.id.main_layout), "No data found!", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Dismiss", v -> {
+                        }).show();
+            } else {
+                showNews(list);
+            }
             progressDialog.dismiss();
+
         }
 
         @Override
