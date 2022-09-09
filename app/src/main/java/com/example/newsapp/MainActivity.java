@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.newsapp.Models.Article;
 import com.example.newsapp.Models.NewsApiResponse;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Locale;
@@ -77,7 +78,12 @@ public class MainActivity extends AppCompatActivity implements SelectListener, V
 
         @Override
         public void onError(String message) {
-
+            Snackbar.make(findViewById(R.id.main_layout), message, Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Retry", v -> {
+                        showProgressDialog("Retrying...");
+                        RequestManager manager = new RequestManager(MainActivity.this);
+                        manager.getArticle(listener, "technology", null);
+                    }).show();
         }
     };
 
