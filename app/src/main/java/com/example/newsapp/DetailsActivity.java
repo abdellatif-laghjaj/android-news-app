@@ -19,6 +19,9 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        //back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         article = (Article) getIntent().getSerializableExtra("data");
         textTitle = findViewById(R.id.text_details_title);
         textDescription = findViewById(R.id.text_details_details);
@@ -37,5 +40,11 @@ public class DetailsActivity extends AppCompatActivity {
         textAuthor.setText(article.getAuthor());
         textPublishedAt.setText(article.getPublishedAt());
         Picasso.get().load(article.getUrlToImage()).into(imageView);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

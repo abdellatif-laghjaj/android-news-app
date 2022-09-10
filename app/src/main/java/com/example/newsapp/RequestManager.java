@@ -29,7 +29,7 @@ public class RequestManager {
     public void getArticle(OnFetchDataListener listener, String category, String query) {
         CallNewsApi callNewsApi = retrofit.create(CallNewsApi.class);
         Call<NewsApiResponse> call = callNewsApi.callHeadlines(
-                "ma",
+                "ae",
                 category,
                 query,
                 context.getString(R.string.api_key)
